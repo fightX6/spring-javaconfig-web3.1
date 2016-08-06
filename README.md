@@ -1,0 +1,1 @@
+此项目为  spring + springmvc  的  全代码配置   不需要xml配置 和web.xml配置
