@@ -5,6 +5,7 @@ package me.xf.containerinitializer;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -15,7 +16,7 @@ import org.springframework.context.ApplicationContextAware;
  * @author xf
  *         2016年8月6日下午9:17:31
  */
-public class SpringContextUtil implements ApplicationContextAware {
+public class SpringContextUtil implements ApplicationContextAware ,BeanPostProcessor{
 	private static ApplicationContext applicationContext; // Spring应用上下文环境
 
 	/**
@@ -104,4 +105,15 @@ public class SpringContextUtil implements ApplicationContextAware {
 	public static String[] getAliases(String name) throws NoSuchBeanDefinitionException {
 		return applicationContext.getAliases(name);
 	}
+	/**优先加载BeanPostProcessor的实现Bean;*/
+	@Override
+	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+		return bean;
+	}
+
+	@Override
+	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+		return bean;
+	}
+	/**优先加载BeanPostProcessor的实现Bean;*/
 }

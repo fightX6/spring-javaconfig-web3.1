@@ -1,5 +1,8 @@
 package me.xf.containerinitializer;
 
+import java.util.EnumSet;
+
+import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -10,6 +13,7 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
+import org.springframework.web.filter.HttpPutFormContentFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
 /**
@@ -27,21 +31,25 @@ import org.springframework.web.servlet.DispatcherServlet;
  * 2016年8月6日下午7:48:55
  */
 public class ServletContainerInitializer implements WebApplicationInitializer {
-
+	//注册顺序记录
+	public static int count = 1;
 	@Override
 	public void onStartup(ServletContext container) throws ServletException {
 		// 初始化 日志系统
 		initializeLog4jConfig(container);
 		// 初始化spring 根容器
 		initializeSpringConfig(container);
-		// 初始化 springmvc 子容器
-		initializeSpringMVCConfig(container);
 		// 注册 监听器 
 		registerListener(container);
+		// 注册 过滤器 
+		beforeRegisterFilter(container);
+		// 初始化 springmvc 子容器  
+		initializeSpringMVCConfig(container);
+		// 注册 过滤器 
+		afterRegisterFilter(container);
 		// 注册 servlet 
 		registerServlet(container);
-		// 注册 过滤器 
-		registerFilter(container);
+		
 	}
 	/**
 	 * 初始化日志系统
@@ -52,6 +60,7 @@ public class ServletContainerInitializer implements WebApplicationInitializer {
 	private void initializeLog4jConfig(ServletContext container) {
 		// Log4jConfigListener
 		container.setInitParameter("log4jConfigLocation", "classpath:log4j2.xml");
+		//是否禁用 log4j2 的自动初始化功能
 		container.setInitParameter("isLog4jAutoInitializationDisabled", "false");
 	}
 	/**
@@ -94,23 +103,42 @@ public class ServletContainerInitializer implements WebApplicationInitializer {
 		//initializeStaggingServlet(container);
 	}
 	/**
-	 * 注册  过滤器 
+	 * spring mvc 之前注册  过滤器 
 	 * @author xf
 	 * 2016年8月6日下午9:02:45
 	 * @param container
 	 */
-	private void registerFilter(ServletContext container) {
+	private void beforeRegisterFilter(ServletContext container) {
 		if(true){
 			FilterRegistration.Dynamic filterRegistration = container.addFilter("HiddenHttpMethodFilter", HiddenHttpMethodFilter.class);
-			filterRegistration.addMappingForUrlPatterns(null, false, "/*");
+			filterRegistration.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST,DispatcherType.ASYNC), false, "/*");
+			filterRegistration.setAsyncSupported(true);
+		}
+		if(true){
+			/**
+			 * HiddenHttpMethodFilter不同，在form中不用添加参数名为_method的隐藏域，
+			 * 且method不必是post，直接写成put，但该过滤器只能接受enctype值为application/x-www-form-urlencoded的表单
+			 */
+			FilterRegistration.Dynamic filterRegistration = container.addFilter("HttpPutFormContentFilter", HttpPutFormContentFilter.class);
+			filterRegistration.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST,DispatcherType.ASYNC), false, "/*");
 			filterRegistration.setAsyncSupported(true);
 		}
 		if(true){
 			FilterRegistration.Dynamic filterRegistration = container.addFilter("CharacterEncodingFilter", CharacterEncodingFilter.class);
-			filterRegistration.addMappingForUrlPatterns(null, false, "/*");
+			filterRegistration.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST,DispatcherType.ASYNC), false, "/*");
 			filterRegistration.setAsyncSupported(true);
+			filterRegistration.setInitParameter("forceEncoding", "true");
+			filterRegistration.setInitParameter("encoding", "UTF-8");
 		}
-		
+	}
+	/**
+	 * spring mvc 之后注册  过滤器 
+	 * @author xf
+	 * 2016年8月6日下午9:02:45
+	 * @param container
+	 */
+	private void afterRegisterFilter(ServletContext container) {
+		 
 	}
 	/**
 	 * 注册  监听器 
