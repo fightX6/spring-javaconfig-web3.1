@@ -6,6 +6,8 @@ package me.xf.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import me.xf.utils.LogHelper;
+
 /**
  * HomeController
  * @author xf
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping(value="/")
-public class HomeController {
+public class HomeController extends LogHelper {
 	
 	@RequestMapping(value="index")
 	public String index(){

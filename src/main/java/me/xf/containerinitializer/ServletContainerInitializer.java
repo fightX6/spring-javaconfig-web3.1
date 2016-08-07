@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
+import org.apache.logging.log4j.web.Log4jWebSupport;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -59,9 +60,9 @@ public class ServletContainerInitializer implements WebApplicationInitializer {
 	 */
 	private void initializeLog4jConfig(ServletContext container) {
 		// Log4jConfigListener
-		container.setInitParameter("log4jConfigLocation", "classpath:log4j2.xml");
+		container.setInitParameter(Log4jWebSupport.LOG4J_CONFIG_LOCATION, "classpath:log4j2.xml");
 		//是否禁用 log4j2 的自动初始化功能
-		container.setInitParameter("isLog4jAutoInitializationDisabled", "false");
+		container.setInitParameter(Log4jWebSupport.IS_LOG4J_AUTO_INITIALIZATION_DISABLED, "false");
 	}
 	/**
 	 * 初始化spring根容器

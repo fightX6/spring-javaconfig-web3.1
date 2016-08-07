@@ -23,6 +23,7 @@ import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -162,6 +163,12 @@ public class MVCConfigureation  extends WebMvcConfigurationSupport {
 		return handlerMapping;
 	}
 	
+	@Override
+	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+		logInfo((ServletContainerInitializer.count++)+"、[Initialize addResourceHandlers]");
+		super.addResourceHandlers(registry);
+		registry.addResourceHandler("/js/**").addResourceLocations("/js/");
+	}
 	private void logInfo(String msg,Object... params){
 		if(log.isInfoEnabled()){
 			log.info(msg,params);

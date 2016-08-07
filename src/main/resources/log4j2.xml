@@ -2,7 +2,7 @@
 <!-- status=debug 可以查看log4j的装配过程 -->  
 <configuration status="off" monitorInterval="30">  
     <properties>  
-        <property name="LOG_HOME">/log</property>  
+        <property name="LOG_HOME">/logs</property>  
         <!-- 日志备份目录 -->  
         <property name="BACKUP_HOME">{LOG_HOME}/backup</property>  
         <property name="SERVER_NAME">global</property>  
@@ -23,7 +23,7 @@
     </appenders>  
     <loggers>  
         <!-- 3rdparty Loggers -->  
-        <logger name="org.springframework.core" level="debug">  
+       <!--  <logger name="org.springframework.core" level="debug">  
         </logger>  
         <logger name="org.springframework.beans" level="debug">  
         </logger>  
@@ -32,7 +32,7 @@
         <logger name="org.springframework.web" level="debug">  
         </logger>  
         <logger name="org.apache.http" level="warn">
-        </logger>  
+        </logger>   -->
         <!-- Root Logger -->  
         <root level="DEBUG">  
             <appender-ref ref="DevLog" />  
