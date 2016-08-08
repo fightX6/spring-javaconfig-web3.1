@@ -3,12 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <script src="/spring-javaconfig-web3.1/js/sockjs.min.js"></script>
-    <script src="/spring-javaconfig-web3.1/js/stomp.js"></script>
+    <script src="/js/sockjs.min.js"></script>
+    <script src="/js/stomp.js"></script>
     <!-- 为了方便起见，js我就直接这么放这儿了 -->
     <script>
         var stompClient = null;
-        var content = "spring-javaconfig-web3.1";     
         function setConnected(connected) {
             document.getElementById('connect').disabled = connected;
             document.getElementById('disconnect').disabled = !connected;
@@ -64,11 +63,11 @@
             if(!window.sockjs[uri]) {
             	try{
         	    	if ("MozWebSocket" in window){
-        	    		window.sockjs[uri] =new MozWebSocket((url + '/' + content + (uri.substring(0,1)=='/'?'':'/') + uri).replace('http','ws'));
+        	    		window.sockjs[uri] =new MozWebSocket((url +  (uri.substring(0,1)=='/'?'':'/') + uri).replace('http','ws'));
         	    	}else if('WebSocket' in window){
-        	    		window.sockjs[uri] =new WebSocket((url + '/' + content + (uri.substring(0,1)=='/'?'':'/') + uri).replace('http','ws'));
+        	    		window.sockjs[uri] =new WebSocket((url +  (uri.substring(0,1)=='/'?'':'/') + uri).replace('http','ws'));
         	    	}else{
-        	        	window.sockjs[uri] = new SockJS(url + '/' + content + (uri.substring(0,1)=='/'?'':'/') + uri +'/sockjs');
+        	        	window.sockjs[uri] = new SockJS(url +  (uri.substring(0,1)=='/'?'':'/') + uri +'/sockjs');
         	    	}
             	}catch(e){
         			if(console){

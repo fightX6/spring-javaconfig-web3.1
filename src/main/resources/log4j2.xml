@@ -2,7 +2,7 @@
 <!-- status=debug 可以查看log4j的装配过程 -->  
 <configuration status="off" monitorInterval="30">  
     <properties>  
-        <property name="LOG_HOME">/logs</property>  
+        <property name="LOG_HOME">${sys:catalina.home}/logs</property>  
         <!-- 日志备份目录 -->  
         <property name="BACKUP_HOME">{LOG_HOME}/backup</property>  
         <property name="SERVER_NAME">global</property>  
@@ -18,6 +18,7 @@
             <PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%c:%l] - %msg%xEx%n" />  
             <Policies>  
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />  
+                
             </Policies>  
         </RollingRandomAccessFile>  
     </appenders>  
