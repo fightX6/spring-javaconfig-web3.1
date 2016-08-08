@@ -3,9 +3,9 @@
  */
 package me.xf.websocket;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -29,6 +29,7 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 @Configuration
 @EnableWebMvc
 @EnableWebSocketMessageBroker
+@ComponentScan(basePackages="me.xf")//websocket扫描 messageMapping等注解路径
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer{
 
 	/**
@@ -49,12 +50,11 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer{
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
-		registry.enableSimpleBroker("/broker");  //设置服务器广播消息的基础路径 设置可以订阅的地址，也就是服务器可以发送的地址
-		//.setRelayHost(ConfigureUtil.getProperty("BrokerUrl")).setRelayPort(Integer.valueOf(ConfigureUtil.getProperty("BrokerPort"))) // 设置broker的地址及端口号
-		//.setSystemHeartbeatReceiveInterval(2000) // 设置心跳信息接收时间间隔
-        //.setSystemHeartbeatSendInterval(2000); // 设置心跳信息发送时间间隔
-		// 是浏览器请求编码的前缀，
-		registry.setApplicationDestinationPrefixes("/ws");  //设置客户端订阅消息的基础路径
+		//设置服务器广播消息的基础路径 设置可以订阅的地址，也就是服务器可以发送的地址
+		registry.enableSimpleBroker("/broker");   
+		
+		// 是浏览器请求编码的前缀，T
+		registry.setApplicationDestinationPrefixes("/app");  //设置客户端订阅消息的基础路径
         registry.setPathMatcher(new AntPathMatcher("."));    //可以已“.”来分割路径，看看类级别的@messageMapping和方法级别的@messageMapping
 	} 
 
@@ -72,24 +72,17 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer{
 	 */
 	@Override
 	public boolean configureMessageConverters(List<MessageConverter> messageConverters) {
-		if(messageConverters == null ){
-			messageConverters = new ArrayList<MessageConverter>();
-		}
-		return super.configureMessageConverters(messageConverters);
+		return true;
 	}
 	
 	@Override
 	public void configureClientInboundChannel(ChannelRegistration registration) {
 		super.configureClientInboundChannel(registration);
-		 registration.taskExecutor().corePoolSize(4) //设置消息输入通道的线程池线程数
-	        .maxPoolSize(8)//最大线程数
-	        .keepAliveSeconds(60);//线程活动时间
 	}
 	
 	@Override
 	public void configureClientOutboundChannel(ChannelRegistration registration) {
 		super.configureClientOutboundChannel(registration);
-		registration.taskExecutor().corePoolSize(4).maxPoolSize(8);
 	}
 	
 }

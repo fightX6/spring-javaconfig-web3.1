@@ -6,8 +6,7 @@ package me.xf.containerinitializer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -43,7 +42,7 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @ComponentScan(basePackages = { "me.xf" },useDefaultFilters=false,includeFilters={@Filter(type = FilterType.ANNOTATION, classes={Controller.class})})
 public class MVCConfigureation  extends WebMvcConfigurationSupport {
-	private static final Logger log = LoggerFactory.getLogger(MVCConfigureation.class);
+	private static final org.apache.logging.log4j.Logger log = LogManager.getLogger(MVCConfigureation.class);
 	@Override
 	protected void addInterceptors(InterceptorRegistry registry) {
 		logInfo((ServletContainerInitializer.count++)+"、[registry addInterceptors...]");

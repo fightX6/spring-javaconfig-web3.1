@@ -1,11 +1,11 @@
 package me.xf.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class LogHelper {
 
-	private Logger log = LoggerFactory.getLogger(this.getClass());
+	private  Logger log = LogManager.getLogger(this.getClass());
 	
 	public void logInfo(String msg,Object... params){
 		if(log.isInfoEnabled()){

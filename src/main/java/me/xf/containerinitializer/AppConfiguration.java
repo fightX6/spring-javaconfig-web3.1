@@ -8,8 +8,7 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -45,7 +44,7 @@ import freemarker.template.utility.XmlEscape;
 															  @Filter(type = FilterType.REGEX,pattern={"me.xf.containerinitializer.MVCConfigureation"})			
 															} )
 public class AppConfiguration {
-	private Logger log = LoggerFactory.getLogger(AppConfiguration.class);
+	private static final org.apache.logging.log4j.Logger log = LogManager.getLogger(AppConfiguration.class);
 	/**
 	 * 
 	 */
